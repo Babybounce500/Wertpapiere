@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Optionspreis Berechnung (Black-Scholes Modell)</title>
+</head>
+<body>
+    <h1>Optionspreis Berechnung (Black-Scholes Modell)</h1>
+    <p>Der Optionspreis wird mithilfe des "Black-Scholes-Modells" berechnet.</p>
+    <table>
+        <tr>
+            <td>Aktueller Kurs des Basiswerts (S):</td>
+            <td><input type="number" step="0.01" id="basiswert" value="100"></td>
+        </tr>
+        <tr>
+            <td>Ausübungspreis (K):</td>
+            <td><input type="number" step="0.01" id="ausuebungspreis" value="110"></td>
+        </tr>
+        <tr>
+            <td>Verbleibende Laufzeit der Option (T) in Jahren:</td>
+            <td><input type="number" step="0.01" id="laufzeit" value="1"></td>
+        </tr>
+        <tr>
+            <td>Risikofreier Zinssatz (r) als Dezimalzahl (z.B. 0.05 für 5%):</td>
+            <td><input type="number" step="0.0001" id="zinssatz" value="0.05"></td>
+        </tr>
+        <tr>
+            <td>Volatilität (σ) als Dezimalzahl (z.B. 0.2 für 20%):</td>
+            <td><input type="number" step="0.0001" id="volatilitaet" value="0.2"></td>
+        </tr>
+        <tr>
+            <td>Dividendenrendite (q) als Dezimalzahl (z.B. 0.02 für 2%, optional):</td>
+            <td><input type="number" step="0.0001" id="dividendenrendite" value="0"></td>
+        </tr>
+    </table>
+    <button onclick="berechneOptionspreis()">Optionspreis berechnen</button>
+    <p id="optionspreis">-</p>
+
+    <script>
+        function berechneOptionspreis() {
+            const basiswert = parseFloat(document.getElementById("basiswert").value); // Aktueller Kurs des Basiswerts (S)
+            const ausuebungspreis = parseFloat(document.getElementById("ausuebungspreis").value); // Ausübungspreis (K)
+            const laufzeit = parseFloat(document.getElementById("laufzeit").value); // Verbleibende Laufzeit der Option (T) in Jahren
+            const zinssatz = parseFloat(document.getElementById("zinssatz").value); // Risikofreier Zinssatz (r) als Dezimalzahl
+            const volatilitaet = parseFloat(document.getElementById("volatilitaet").value); // Volatilität (σ) als Dezimalzahl
+            const dividendenrendite = parseFloat(document.getElementById("dividendenrendite").value); // Dividendenrendite (q) als Dezimalzahl
+
+            // Berechne den Optionspreis nach dem Black-Scholes-Modell
+            const d1 = (Math.log(basiswert / ausuebungspreis) + (zinssatz + 0.5 * volatilitaet * volatilitaet) * laufzeit) / (volatilitaet * Math.sqrt(laufzeit));
+            const d2 = d1 - volatilitaet * Math.sqrt(laufzeit);
+            const nd1 = standardNormalCDF(d1);
+            const nd2 = standardNormalCDF(d2);
+
+            const callOptionspreis = basiswert * Math.exp(-dividendenrendite * laufzeit) * nd1 - ausuebungspreis * Math.exp(-zinssatz * laufzeit) * nd2;
+            const putOptionspreis = callOptionspreis + ausuebungspreis * Math.exp(-zinssatz * laufzeit) - basiswert * Math.exp(-dividendenrendite * laufzeit);
+
+            document.getElementById("optionspreis").innerText = "Optionspreis (Call): " + callOptionspreis.toFixed(2) + " Euro\nOptionspreis (Put): " + putOptionspreis.toFixed(2) + " Euro";
+        }
+
+        // Funktion zur Berechnung der kumulativen Standardnormalverteilung (CDF)
+        function standardNormalCDF(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            if (x > 0) return 1 - prob;
+            return prob;
+        }
+    </script>
+</body>
+</html>
