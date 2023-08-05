@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Future Preis Berechnung</title>
+</head>
+<body>
+    <h1>Future Preis Berechnung</h1>
+    <table>
+        <tr>
+            <td>Spotpreis (S):</td>
+            <td><input type="number" id="spotPrice" value="100" /></td>
+        </tr>
+        <tr>
+            <td>Risikofreier Zinssatz (r):</td>
+            <td><input type="number" id="riskFreeRate" value="0.05" /></td>
+        </tr>
+        <tr>
+            <td>Dividendenrendite (y):</td>
+            <td><input type="number" id="dividendYield" value="0.02" /></td>
+        </tr>
+        <tr>
+            <td>Lagerkosten (c):</td>
+            <td><input type="number" id="storageCost" value="0.01" /></td>
+        </tr>
+        <tr>
+            <td>Laufzeit des Futures (T):</td>
+            <td><input type="number" id="timeToMaturity" value="1" /></td>
+        </tr>
+    </table>
+    <button onclick="calculateFuturePrice()">Future Preis berechnen</button>
+    <p id="futurePrice"></p>
+
+    <script>
+        function calculateFuturePrice() {
+            var S = parseFloat(document.getElementById('spotPrice').value);
+            var r = parseFloat(document.getElementById('riskFreeRate').value);
+            var y = parseFloat(document.getElementById('dividendYield').value);
+            var c = parseFloat(document.getElementById('storageCost').value);
+            var T = parseFloat(document.getElementById('timeToMaturity').value);
+
+            var F = S * Math.exp((r - y + c) * T);
+
+            document.getElementById('futurePrice').innerHTML = 'Future Preis: ' + F.toFixed(2);
+        }
+    </script><p>In diesem Code sind die Beispieleingaben wie folgt:
+
+Spotpreis (S): 100
+Risikofreier Zinssatz (r): 0.05 (was 5% entspricht)
+Dividendenrendite (y): 0.02 (was 2% entspricht)
+Lagerkosten (c): 0.01 (was 1% entspricht)
+Laufzeit des Futures (T): 1 Jahr</p><p>F=S×e 
+    (r−y+c)T</p>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOMVS AVREA - Produktliste</title>
+</head>
+<body><h1>PRODUCTUS Quotes</h1>
+  <table id="productTable">
+    <tr>
+      <th>Produktname</th>
+      <th>First Quote</th>
+      <th>Aktueller Kurs</th>
+      <th>Performance</th>
+    </tr>
+    <tr>
+      <td>MONEY 5</td>
+      <td id="firstQuote_2">274.32</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr><tr>
+      <td>SMALL 5 HEDGE</td>
+      <td id="firstQuote_2">-39.64</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr><tr>
+      <td>BROKE 5 HEDGE</td>
+      <td id="firstQuote_2">-15,09</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr><tr>
+      <td>TRUE DAX</td>
+      <td id="firstQuote_2">99.80</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr><tr>
+      <td>BIG 5</td>
+      <td id="firstQuote_2">132</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr><tr>
+      <td>Produkt 2</td>
+      <td id="firstQuote_2">200</td>
+      <td><input type="number" id="currentQuote_2"></td>
+      <td id="performance_2">-</td>
+    </tr>
+    <!-- Füge hier weitere Zeilen für weitere Produkte hinzu -->
+  </table>
+  
+  <script>
+    // Erhalte eine Referenz auf die Tabelle
+    const table = document.getElementById("productTable");
+
+    // Füge für jede Zeile (außer der Kopfzeile) einen Event Listener hinzu
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = table.rows[i];
+      const firstQuote = parseFloat(row.cells[1].innerText);
+      const currentQuoteInput = row.cells[2].firstElementChild;
+      const performanceCell = row.cells[3];
+
+      currentQuoteInput.addEventListener("input", function() {
+        const currentQuote = parseFloat(this.value);
+        let performance;
+        if (firstQuote >= 0) {
+          performance = ((currentQuote - firstQuote) / Math.abs(firstQuote)) * 100;
+        } else {
+          performance = ((Math.abs(firstQuote) - Math.abs(currentQuote)) / Math.abs(firstQuote)) * 100;
+        }
+        performanceCell.innerText = performance.toFixed(2) + "%";
+      });
+    }
+  </script>
+</body>
+</html>

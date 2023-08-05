@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fondspreis Berechnung</title>
+</head>
+<body>
+    <h1>MONEY 5 Fonds</h1>
+    <p>Der Fondspreis wird berechnet aus der Addition aller 5 Kurswerte geteilt durch die Anzahl 5.</p>
+    <button onclick="berechneFondsPreis()">Fondspreis berechnen</button>
+    <p id="fondsPreis">-</p>
+    <p id="aktuellesDatum">-</p>
+    <table>
+        <tr>
+            <th>Aktienname</th>
+            <th>Aktueller Kurs (Euro)</th>
+        </tr>
+        <tr>
+            <td>MunichRe</td>
+            <td><input type="number" step="0.01" id="kursMunichRe" value="150"></td>
+        </tr>
+        <tr>
+            <td>Sartorius</td>
+            <td><input type="number" step="0.01" id="kursSartorius" value="200"></td>
+        </tr>
+        <tr>
+            <td>Rheinmetall</td>
+            <td><input type="number" step="0.01" id="kursRheinmetall" value="90"></td>
+        </tr>
+        <tr>
+            <td>HannoverRueck</td>
+            <td><input type="number" step="0.01" id="kursHannoverRueck" value="130"></td>
+        </tr>
+        <tr>
+            <td>MTU</td>
+            <td><input type="number" step="0.01" id="kursMTU" value="250"></td>
+        </tr>
+    </table>
+
+    <script>
+        function berechneFondsPreis() {
+            const gewichtungen = [0.2, 0.2, 0.2, 0.2, 0.2];
+            const kursMunichRe = parseFloat(document.getElementById("kursMunichRe").value);
+            const kursSartorius = parseFloat(document.getElementById("kursSartorius").value);
+            const kursRheinmetall = parseFloat(document.getElementById("kursRheinmetall").value);
+            const kursHannoverRueck = parseFloat(document.getElementById("kursHannoverRueck").value);
+            const kursMTU = parseFloat(document.getElementById("kursMTU").value);
+
+            const kurswerte = [kursMunichRe, kursSartorius, kursRheinmetall, kursHannoverRueck, kursMTU];
+            const fondsVolumen = 100000; // in Euro
+            const fondsPreis = (kurswerte.reduce((sum, kurs, index) => sum + (kurs * gewichtungen[index]), 0)) / gewichtungen.reduce((sum, gewicht) => sum + gewicht, 0);
+
+            document.getElementById("fondsPreis").innerText = "Fondspreis: " + fondsPreis.toFixed(2) + " Euro";
+        }
+
+        // Funktion zum Anzeigen des aktuellen Datums
+        function zeigeAktuellesDatum() {
+            const now = new Date();
+            const datumString = now.toLocaleDateString("de-DE");
+            document.getElementById("aktuellesDatum").innerText = "Aktuelles Datum: " + datumString;
+        }
+
+        // Aufruf der Funktion, um das aktuelle Datum zu setzen
+        zeigeAktuellesDatum();
+    </script>
+</body>
+</html>

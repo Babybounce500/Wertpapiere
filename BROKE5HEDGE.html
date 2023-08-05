@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fondspreis Berechnung</title>
+</head>
+<body>
+    <h1>BROKE 5 Hedgefund</h1>
+    <p>Der Fondspreis wird berechnet aus der Addition aller 5 Kurswerte geteilt durch die Anzahl 5, mit einem negativen Vorzeichen.</p>
+    <button onclick="berechneFondsPreis()">Fondspreis berechnen</button>
+    <p id="fondsPreis">-</p>
+    <p id="aktuellesDatum">-</p>
+    <table>
+        <tr>
+            <th>Aktienname</th>
+            <th>Aktueller Kurs (Euro)</th>
+        </tr>
+        <tr>
+            <td>Siemens Energy</td>
+            <td><input type="number" step="0.01" id="kursSiemensEnergy" value="40"></td>
+        </tr>
+        <tr>
+            <td>Deutsche Bank</td>
+            <td><input type="number" step="0.01" id="kursDeutscheBank" value="12"></td>
+        </tr>
+        <tr>
+            <td>Commerzbank</td>
+            <td><input type="number" step="0.01" id="kursCommerzbank" value="5"></td>
+        </tr>
+        <tr>
+            <td>Vonovia</td>
+            <td><input type="number" step="0.01" id="kursVonovia" value="50"></td>
+        </tr>
+        <tr>
+            <td>Deutsche Telekom</td>
+            <td><input type="number" step="0.01" id="kursDeutscheTelekom" value="20"></td>
+        </tr>
+    </table>
+
+    <script>
+        function berechneFondsPreis() {
+            const gewichtungen = [0.2, 0.2, 0.2, 0.2, 0.2];
+            const kursSiemensEnergy = parseFloat(document.getElementById("kursSiemensEnergy").value);
+            const kursDeutscheBank = parseFloat(document.getElementById("kursDeutscheBank").value);
+            const kursCommerzbank = parseFloat(document.getElementById("kursCommerzbank").value);
+            const kursVonovia = parseFloat(document.getElementById("kursVonovia").value);
+            const kursDeutscheTelekom = parseFloat(document.getElementById("kursDeutscheTelekom").value);
+
+            const kurswerte = [kursSiemensEnergy, kursDeutscheBank, kursCommerzbank, kursVonovia, kursDeutscheTelekom];
+            const fondsVolumen = 100000; // in Euro
+            const fondsPreis = -1 * (kurswerte.reduce((sum, kurs, index) => sum + (kurs * gewichtungen[index]), 0)) / gewichtungen.reduce((sum, gewicht) => sum + gewicht, 0);
+
+            document.getElementById("fondsPreis").innerText = "Fondspreis: " + fondsPreis.toFixed(2) + " Euro";
+        }
+
+        // Funktion zum Anzeigen des aktuellen Datums
+        function zeigeAktuellesDatum() {
+            const now = new Date();
+            const datumString = now.toLocaleDateString("de-DE");
+            document.getElementById("aktuellesDatum").innerText = "Aktuelles Datum: " + datumString;
+        }
+
+        // Aufruf der Funktion, um das aktuelle Datum zu setzen
+        zeigeAktuellesDatum();
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fondspreis Berechnung</title>
+</head>
+<body>
+    <h1>SMALL 5 Hedgefonds</h1>
+    <p>Der Fondspreis wird berechnet aus der Addition aller 5 Kurswerte geteilt durch die Anzahl 5 und mit einem negativen Vorzeichen versehen.</p>
+    <button onclick="berechneFondsPreis()">Fondspreis berechnen</button>
+    <p id="fondsPreis">-</p>
+    <p id="aktuellesDatum">-</p>
+    <table>
+        <tr>
+            <th>Aktienname</th>
+            <th>Aktueller Kurs (Euro)</th>
+        </tr>
+        <tr>
+            <td>Deutsche Bank AG</td>
+            <td><input type="number" step="0.01" id="kursDeutscheBank" value="10"></td>
+        </tr>
+        <tr>
+            <td>Deutsche Lufthansa AG</td>
+            <td><input type="number" step="0.01" id="kursLufthansa" value="5"></td>
+        </tr>
+        <tr>
+            <td>HeidelbergCement AG</td>
+            <td><input type="number" step="0.01" id="kursHeidelbergCement" value="40"></td>
+        </tr>
+        <tr>
+            <td>Henkel AG & Co. KGaA</td>
+            <td><input type="number" step="0.01" id="kursHenkel" value="60"></td>
+        </tr>
+        <tr>
+            <td>Infineon Technologies AG</td>
+            <td><input type="number" step="0.01" id="kursInfineon" value="30"></td>
+        </tr>
+    </table>
+
+    <script>
+        function berechneFondsPreis() {
+            const gewichtungen = [0.2, 0.2, 0.2, 0.2, 0.2];
+            const kursDeutscheBank = parseFloat(document.getElementById("kursDeutscheBank").value);
+            const kursLufthansa = parseFloat(document.getElementById("kursLufthansa").value);
+            const kursHeidelbergCement = parseFloat(document.getElementById("kursHeidelbergCement").value);
+            const kursHenkel = parseFloat(document.getElementById("kursHenkel").value);
+            const kursInfineon = parseFloat(document.getElementById("kursInfineon").value);
+
+            const kurswerte = [kursDeutscheBank, kursLufthansa, kursHeidelbergCement, kursHenkel, kursInfineon];
+            const fondsVolumen = 100000; // in Euro
+            const fondsPreis = -1 * (kurswerte.reduce((sum, kurs, index) => sum + (kurs * gewichtungen[index]), 0)) / gewichtungen.reduce((sum, gewicht) => sum + gewicht, 0);
+
+            document.getElementById("fondsPreis").innerText = "Fondspreis: " + fondsPreis.toFixed(2) + " Euro";
+        }
+
+        // Funktion zum Anzeigen des aktuellen Datums
+        function zeigeAktuellesDatum() {
+            const now = new Date();
+            const datumString = now.toLocaleDateString("de-DE");
+            document.getElementById("aktuellesDatum").innerText = "Aktuelles Datum: " + datumString;
+        }
+
+        // Aufruf der Funktion, um das aktuelle Datum zu setzen
+        zeigeAktuellesDatum();
+    </script>
+</body>
+</html>

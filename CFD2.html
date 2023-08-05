@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CFD Berechnung</title>
+</head>
+<body>
+    <h1>CFD Handel</h1>
+    <p>Geben Sie den Basiswert und die Stückzahl ein, um den CFD-Preis und die Margin zu berechnen.</p>
+    <div>
+        <label for="basePrice">Basiswert (Euro): </label>
+        <input type="number" step="0.01" id="basePrice" value="100">
+    </div>
+    <div>
+        <label for="quantity">Stückzahl: </label>
+        <input type="number" step="1" id="quantity" value="10">
+    </div>
+    <button onclick="calculateCfd()">CFD und Margin berechnen</button>
+    <p id="bidPrice">-</p>
+    <p id="askPrice">-</p>
+    <p id="cfdPrice">-</p>
+    <p id="margin">-</p>
+
+    <script>
+        function calculateCfd() {
+            const spreadPercent = 0.05;
+            const marginRequirement = 0.1;
+            const basePrice = parseFloat(document.getElementById("basePrice").value);
+            const quantity = parseFloat(document.getElementById("quantity").value);
+
+            const spread = basePrice * spreadPercent;
+            const bidPrice = basePrice - spread / 2;
+            const askPrice = basePrice + spread / 2;
+
+            const cfdPrice = (bidPrice + askPrice) / 2;
+            const margin = cfdPrice * quantity * marginRequirement;
+
+            document.getElementById("bidPrice").innerText = "Geldkurs (Bid): " + bidPrice.toFixed(2) + " Euro";
+            document.getElementById("askPrice").innerText = "Briefkurs (Ask): " + askPrice.toFixed(2) + " Euro";
+            document.getElementById("cfdPrice").innerText = "CFD-Preis: " + cfdPrice.toFixed(2) + " Euro";
+            document.getElementById("margin").innerText = "Margin: " + margin.toFixed(2) + " Euro";
+        }
+    </script>
+</body>
+</html>

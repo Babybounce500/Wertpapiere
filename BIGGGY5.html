@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fondspreis Berechnung</title>
+</head>
+<body>
+    <h1>BIG 5 Fonds</h1>
+    <p>Der Fondspreis wird berechnet aus der Addition aller 5 Kurswerte geteilt durch die Anzahl 5.</p>
+    <button onclick="berechneFondsPreis()">Fondspreis berechnen</button>
+    <p id="fondsPreis">-</p>
+    <p id="aktuellesDatum">-</p>
+    <table>
+        <tr>
+            <th>Aktienname</th>
+            <th>Aktueller Kurs (Euro)</th>
+        </tr>
+        <tr>
+            <td>Allianz</td>
+            <td><input type="number" step="0.01" id="kursAllianz" value="180"></td>
+        </tr>
+        <tr>
+            <td>Mercedes-Benz Group (ex Daimler)</td>
+            <td><input type="number" step="0.01" id="kursMercedes" value="100"></td>
+        </tr>
+        <tr>
+            <td>BMW St</td>
+            <td><input type="number" step="0.01" id="kursBMW" value="85"></td>
+        </tr>
+        <tr>
+            <td>SAP SE</td>
+            <td><input type="number" step="0.01" id="kursSAP" value="140"></td>
+        </tr>
+        <tr>
+            <td>Siemens Energy AG</td>
+            <td><input type="number" step="0.01" id="kursSiemens" value="75"></td>
+        </tr>
+    </table>
+
+    <script>
+        function berechneFondsPreis() {
+            const gewichtungen = [0.2, 0.2, 0.2, 0.2, 0.2];
+            const kursAllianz = parseFloat(document.getElementById("kursAllianz").value);
+            const kursMercedes = parseFloat(document.getElementById("kursMercedes").value);
+            const kursBMW = parseFloat(document.getElementById("kursBMW").value);
+            const kursSAP = parseFloat(document.getElementById("kursSAP").value);
+            const kursSiemens = parseFloat(document.getElementById("kursSiemens").value);
+
+            const kurswerte = [kursAllianz, kursMercedes, kursBMW, kursSAP, kursSiemens];
+            const fondsVolumen = 100000; // in Euro
+            const fondsPreis = (kurswerte.reduce((sum, kurs, index) => sum + (kurs * gewichtungen[index]), 0)) / gewichtungen.reduce((sum, gewicht) => sum + gewicht, 0);
+
+            document.getElementById("fondsPreis").innerText = "Fondspreis: " + fondsPreis.toFixed(2) + " Euro";
+        }
+
+        // Funktion zum Anzeigen des aktuellen Datums
+        function zeigeAktuellesDatum() {
+            const now = new Date();
+            const datumString = now.toLocaleDateString("de-DE");
+            document.getElementById("aktuellesDatum").innerText = "Aktuelles Datum: " + datumString;
+        }
+
+        // Aufruf der Funktion, um das aktuelle Datum zu setzen
+        zeigeAktuellesDatum();
+    </script>
+</body>
+</html>
